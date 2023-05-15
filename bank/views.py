@@ -4,7 +4,7 @@ from . import models
 
 
 class SimpleTemplateView(TemplateView):
-    template_name = "bank/simple_template.html"
+    template_name = "base.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
