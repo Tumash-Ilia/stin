@@ -1,5 +1,5 @@
 # Local
-/bank/secret.py
+/STIN/secret.py
 
 # Django #
 *.log
@@ -142,3 +142,4 @@ GitHub.sublime-settings
 
 /static/
 .env.dev
+/STIN/secret.py
