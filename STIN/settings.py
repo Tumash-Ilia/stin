@@ -112,6 +112,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 10
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+ACCOUNT_EMAIL_VERIFICATION="optional"
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+
+ACCOUNT_FORMS = {
+    'signup': 'bank.forms.CustomSignupForm',
+    'login': 'bank.forms.CustomLoginForm',
+}
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
