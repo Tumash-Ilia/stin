@@ -1,0 +1,1 @@
+web: gunicorn STIN.wsgi --log-file -
