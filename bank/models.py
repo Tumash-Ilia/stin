@@ -27,10 +27,15 @@ class Account(models.Model):
 
 
 class Transaction(models.Model):
+    TRANSACTION_TYPES = [
+        ('deposit', 'Deposit'),
+        ('withdraw', 'Withdraw'),
+    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     amount = MoneyField(max_digits=10, decimal_places=2, validators=[MinMoneyValidator(0)])
     timestamp = models.DateTimeField(auto_now_add=True)
+    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES, default='deposit')
 
     def __str__(self):
         return str(self.id)
