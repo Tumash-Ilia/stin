@@ -19,7 +19,7 @@
                 <span class="navbar-text" style="margin-left: 3px;padding-right: 62px;">Hello, {{ user.first_name }} {{ user.last_name }}</span>
                 <a class="btn btn-primary shadow" role="button" href="{% url 'account_logout' %}">Log out</a>
             {% else %}
-                <a class="btn btn-primary shadow" role="button" href="{% url 'account_login' %}">Log in</a>
+                <a class="btn btn-primary shadow" role="button" href="{% url 'two_factor:login' %}">Log in</a>
             {% endif %}
         </div>
     </div>
