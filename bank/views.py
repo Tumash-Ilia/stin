@@ -5,6 +5,7 @@ from . import models
 from .models import Account, Transaction
 from .forms import TransactionForm
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class SimpleTemplateView(TemplateView):
@@ -16,7 +17,8 @@ class SimpleTemplateView(TemplateView):
         return context
 
 
-class AccountListView(ListView):
+
+class AccountListView(LoginRequiredMixin, ListView):
     model = Account
     template_name = 'bank/account_list.html'
     context_object_name = 'accounts'
@@ -25,7 +27,8 @@ class AccountListView(ListView):
         return Account.objects.filter(owner=self.request.user)
 
 
-class TransactionView(FormView):
+
+class TransactionView(LoginRequiredMixin, FormView):
     template_name = 'bank/transaction.html'
     form_class = TransactionForm
     success_url = '/overview/'
@@ -66,7 +69,8 @@ class TransactionView(FormView):
         return redirect(self.success_url)
 
 
-class TransactionListView(ListView):
+
+class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
     template_name = 'bank/transactions_list.html'
     context_object_name = 'transactions'
