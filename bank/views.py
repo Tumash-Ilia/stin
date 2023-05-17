@@ -17,7 +17,6 @@ class SimpleTemplateView(TemplateView):
         return context
 
 
-
 class AccountListView(LoginRequiredMixin, ListView):
     model = Account
     template_name = 'bank/account_list.html'
@@ -25,7 +24,6 @@ class AccountListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Account.objects.filter(owner=self.request.user)
-
 
 
 class TransactionView(LoginRequiredMixin, FormView):
@@ -67,7 +65,6 @@ class TransactionView(LoginRequiredMixin, FormView):
                 return self.form_invalid(form)
 
         return redirect(self.success_url)
-
 
 
 class TransactionListView(LoginRequiredMixin, ListView):

@@ -23,3 +23,8 @@ jobs:
         run: |
           echo "SECRET_KEY = 'django-insecure-dummy-secret'" > ./STIN/secret.py
           python3 manage.py test
+      - name: Check coverage
+        run: |
+          python3 coverage_cicd.py
+        env:
+          COVERAGE_THRESHOLD: ${{vars.COVERAGE_THRESHOLD}}
