@@ -142,3 +142,5 @@ GitHub.sublime-settings
 
 .env.dev
 /STIN/secret.py
+/static/
+/.env
