@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'djmoney',
+    'djmoney.contrib.exchange',
 
     'django_otp',
     'django_otp.plugins.otp_static',
@@ -75,6 +76,14 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+
+EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
+FIXER_ACCESS_KEY = 'ssx4hTtTm7JTekC9e8VVJKCMlbBpebiA'
+BASE_CURRENCY = 'CZK'
+FIXER_URL = 'https://api.apilayer.com/fixer/latest?base=CZK&symbols=USD,EUR,GBP,CNY'
+
+
 
 TEMPLATES = [
     {
@@ -157,3 +166,5 @@ STATICFILES_DIRS = [BASE_DIR / "static"]  # new (below the above line)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CURRENCIES = ('USD', 'EUR', 'CZK', 'GBP', 'CNY')
