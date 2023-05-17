@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
+    'djmoney',
 
     'django_otp',
     'django_otp.plugins.otp_static',
