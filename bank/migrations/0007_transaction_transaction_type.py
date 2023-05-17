@@ -3,8 +3,15 @@
 from django.db import migrations, models
 
 
-class Migration(migrations.Migration):
+def add_sample_data(apps, schema_editor):
+    # We can't import the Person model directly as it may be a newer
+    # version than this migration expects. We use the historical version.
+    SimpleModel = apps.get_model('bank', 'SimpleModel')
+    SimpleModel.objects.create(just_text="Text 1")
+    SimpleModel.objects.create(just_text="Text 2")
 
+
+class Migration(migrations.Migration):
     dependencies = [
         ('bank', '0006_alter_account_balance_currency_and_more'),
     ]
@@ -13,6 +20,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='transaction',
             name='transaction_type',
-            field=models.CharField(choices=[('deposit', 'Deposit'), ('withdraw', 'Withdraw')], default='deposit', max_length=10),
+            field=models.CharField(choices=[('deposit', 'Deposit'), ('withdraw', 'Withdraw')], default='deposit',
+                                   max_length=10),
         ),
+        migrations.RunPython(add_sample_data),
     ]
