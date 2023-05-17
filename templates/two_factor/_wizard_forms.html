@@ -1,0 +1,20 @@
+{% load example %}
+
+{{ wizard.management_form }}
+
+{% if wizard.form.non_field_errors %}
+    <div class="alert alert-warning">
+        <ul class="alert-message">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{% for field in wizard.form %}
+    <div class="mb-3">
+        {{ field | add_classes:'form-control' }}
+    </div>
+{% endfor %}
+  

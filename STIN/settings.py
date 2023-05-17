@@ -36,9 +36,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'bank',
 
+    'allauth',
+    'allauth.account',
+    'djmoney',
+    'djmoney.contrib.exchange',
+
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_email',  # <- if you want email capability.
+    'two_factor',
+    'two_factor.plugins.phonenumber',  # <- if you want phone number capability.
+    'two_factor.plugins.email',  # <- if you want email capability.
+    # 'two_factor.plugins.yubikey',  # <- for yubikey capability.
 ]
 
 MIDDLEWARE = [
@@ -47,11 +61,31 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'STIN.urls'
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+
+EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
+FIXER_ACCESS_KEY = 'ssx4hTtTm7JTekC9e8VVJKCMlbBpebiA'
+BASE_CURRENCY = 'CZK'
+CURRENCIES = ('USD', 'EUR', 'CZK', 'GBP', 'CNY')
+# CURRENCY_CHOICES = [('USD', 'USD'), ('EUR', 'EUR')]
+FIXER_URL = 'https://api.apilayer.com/fixer/latest?base=CZK&symbols=USD,EUR,GBP,CNY'
+
+
 
 TEMPLATES = [
     {
@@ -100,6 +134,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = 'two_factor:login'
+
+LOGIN_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 10
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+ACCOUNT_FORMS = {
+    'signup': 'bank.forms.CustomSignupForm',
+    'login': 'bank.forms.CustomLoginForm',
+}
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -115,9 +162,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"] #new (below the above line)
+STATICFILES_DIRS = [BASE_DIR / "static"]  # new (below the above line)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

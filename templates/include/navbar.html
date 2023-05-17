@@ -11,16 +11,17 @@
                 class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link active" href="index-app.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
-                <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="contacts.html">Contacts</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.html">Log in</a></li>
-                <li class="nav-item"><a class="nav-link" href="signup.html">Sign up</a></li>
-            </ul>
-            <a class="btn btn-primary shadow" role="button" href="signup.html">Sign up</a>
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Account</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">History</a></li>
+
+            {% if user.is_authenticated %}
+                <span class="navbar-text" style="margin-left: 3px;padding-right: 62px;">Hello, {{ user.first_name }} {{ user.last_name }}</span>
+                <a class="btn btn-secondary shadow" role="button"  style="margin-right: 15px;"href="{% url 'two_factor:profile' %}">Settings</a>
+                <a class="btn btn-primary shadow" role="button"href="{% url 'account_logout' %}">Log out</a>
+            {% else %}
+                <a class="btn btn-primary shadow" role="button" href="{% url 'two_factor:login' %}">Log in</a>
+            {% endif %}
         </div>
     </div>
 </nav>
