@@ -12,7 +12,8 @@
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/">Account</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'account_list' %}">Account</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'payment_view' %}">Payments</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">History</a></li>
 
             {% if user.is_authenticated %}
