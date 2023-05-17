@@ -1,7 +1,8 @@
 from django.views.generic import TemplateView, ListView, FormView
 from djmoney.money import Money
+from djmoney.contrib.exchange.models import convert_money
 from . import models
-from .models import Account
+from .models import Account, Transaction
 from .forms import TransactionForm
 from django.shortcuts import get_object_or_404, redirect
 
@@ -37,18 +38,35 @@ class TransactionView(FormView):
 
         user = self.request.user
 
-        account = get_object_or_404(Account, owner=user, balance_currency=currency)
+        account = Account.objects.filter(owner=user, balance_currency=currency).first()
+
+        if not account:
+            # Если у пользователя нет счета в выбранной валюте,
+            # выполняем конвертацию валюты в CZK
+            czk_currency = 'CZK'
+            amount_money = convert_money(amount_money, czk_currency)
+            # account = Account.objects.create(user=user, currency=czk_currency, balance=czk_amount)
+            account = get_object_or_404(Account, owner=user, balance_currency=czk_currency)
 
         if method == 'deposit':
+            Transaction.objects.create(user=user, account=account, amount=amount, amount_currency=currency,
+                                       transaction_type='deposit')
             account.balance += amount_money
+            account.save()
         elif method == 'withdraw':
             if account.balance >= amount_money:
+                Transaction.objects.create(user=user, account=account, amount=amount, amount_currency=currency,
+                                           transaction_type='withdraw')
                 account.balance -= amount_money
+                account.save()
             else:
-                # Обработка случая, когда недостаточно средств на счете
-                # Можно выбросить исключение или вернуть сообщение об ошибке
-                pass
-
-        account.save()
+                form.add_error(None, "Insufficient funds for withdrawal.")
+                return self.form_invalid(form)
 
         return redirect(self.success_url)
+
+
+class TransactionListView(ListView):
+    model = Transaction
+    template_name = 'bank/transactions_list.html'
+    context_object_name = 'transactions'

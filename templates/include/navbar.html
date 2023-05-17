@@ -14,15 +14,17 @@
                 <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'account_list' %}">Account</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'payment_view' %}">Payments</a></li>
-                <li class="nav-item"><a class="nav-link" href="/">History</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'transaction_list' %}">History</a></li>
 
-            {% if user.is_authenticated %}
-                <span class="navbar-text" style="margin-left: 3px;padding-right: 62px;">Hello, {{ user.first_name }} {{ user.last_name }}</span>
-                <a class="btn btn-secondary shadow" role="button"  style="margin-right: 15px;"href="{% url 'two_factor:profile' %}">Settings</a>
-                <a class="btn btn-primary shadow" role="button"href="{% url 'account_logout' %}">Log out</a>
-            {% else %}
-                <a class="btn btn-primary shadow" role="button" href="{% url 'two_factor:login' %}">Log in</a>
-            {% endif %}
+                {% if user.is_authenticated %}
+                    <span class="navbar-text"
+                          style="margin-left: 3px;padding-right: 62px;">Hello, {{ user.first_name }} {{ user.last_name }}</span>
+                    <a class="btn btn-secondary shadow" role="button" style="margin-right: 15px;"
+                       href="{% url 'two_factor:profile' %}">Settings</a>
+                    <a class="btn btn-primary shadow" role="button" href="{% url 'account_logout' %}">Log out</a>
+                {% else %}
+                    <a class="btn btn-primary shadow" role="button" href="{% url 'two_factor:login' %}">Log in</a>
+                {% endif %}
         </div>
     </div>
 </nav>
