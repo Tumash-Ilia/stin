@@ -24,5 +24,5 @@ urlpatterns = [
     path('', include(tf_urls)),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', views.SimpleTemplateView.as_view())
+    path('', include("bank.urls")),
 ]
