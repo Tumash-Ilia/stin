@@ -81,6 +81,8 @@ AUTHENTICATION_BACKENDS = [
 EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
 FIXER_ACCESS_KEY = 'ssx4hTtTm7JTekC9e8VVJKCMlbBpebiA'
 BASE_CURRENCY = 'CZK'
+CURRENCIES = ('USD', 'EUR', 'CZK', 'GBP', 'CNY')
+# CURRENCY_CHOICES = [('USD', 'USD'), ('EUR', 'EUR')]
 FIXER_URL = 'https://api.apilayer.com/fixer/latest?base=CZK&symbols=USD,EUR,GBP,CNY'
 
 
@@ -167,4 +169,3 @@ STATICFILES_DIRS = [BASE_DIR / "static"]  # new (below the above line)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CURRENCIES = ('USD', 'EUR', 'CZK', 'GBP', 'CNY')
