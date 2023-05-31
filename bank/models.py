@@ -15,8 +15,7 @@ class SimpleModel(models.Model):
 
 class Account(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    balance = MoneyField(max_digits=10, decimal_places=2, null=True, default_currency='CZK',
-                         validators=[MinMoneyValidator(0)])
+    balance = MoneyField(max_digits=10, decimal_places=2, null=True, default_currency='CZK')
 
     def __str__(self):
         return str(self.id)
