@@ -1,4 +1,5 @@
 from django.test import TestCase
+from djmoney.contrib.exchange.models import Rate, ExchangeBackend
 
 from . import models
 
@@ -31,6 +32,12 @@ class TransactionViewTestCase(TestCase):
         # Создаем счет пользователя в USD
         account = Account.objects.create(owner=self.user, balance_currency='USD', balance=Money(0, 'USD'))
         account = Account.objects.create(owner=self.user, balance_currency='EUR', balance=Money(0, 'EUR'))
+        account = Account.objects.create(owner=self.user, balance_currency='CZK', balance=Money(0, 'CZK'))
+        backend = ExchangeBackend.objects.create(
+            name='fixer.io',
+            base_currency='CZK',
+        )
+        rate = Rate.objects.create(currency='USD', value=0.045970, backend_id=backend.name)
 
     def test_form_valid_deposit(self):
         data = {
