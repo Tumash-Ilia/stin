@@ -54,6 +54,27 @@ class TransactionView(LoginRequiredMixin, FormView):
                                        transaction_type='deposit')
             account.balance += amount_money
             account.save()
+        # elif method == 'withdraw':
+        #     if account.balance >= amount_money:
+        #         Transaction.objects.create(user=user, account=account, amount=amount, amount_currency=currency,
+        #                                    transaction_type='withdraw')
+        #         account.balance -= amount_money
+        #         account.save()
+        #     else:
+        #         czk_currency = 'CZK'
+        #         czk_amount_money = convert_money(amount_money, czk_currency)
+        #
+        #         czk_account = Account.objects.filter(owner=user, balance_currency=czk_currency).first()
+        #
+        #         if czk_account.balance >= czk_amount_money:
+        #             Transaction.objects.create(user=user, account=czk_account, amount=amount, amount_currency=currency,
+        #                                        transaction_type='withdraw')
+        #             czk_account.balance -= czk_amount_money
+        #             czk_account.save()
+        #         else:
+        #             form.add_error(None, "Insufficient funds for withdrawal.")
+        #             return self.form_invalid(form)
+
         elif method == 'withdraw':
             if account.balance >= amount_money:
                 Transaction.objects.create(user=user, account=account, amount=amount, amount_currency=currency,
@@ -61,8 +82,38 @@ class TransactionView(LoginRequiredMixin, FormView):
                 account.balance -= amount_money
                 account.save()
             else:
-                form.add_error(None, "Insufficient funds for withdrawal.")
-                return self.form_invalid(form)
+                ten_percent_balance = account.balance * 0.1
+                if amount_money < (account.balance + ten_percent_balance):
+                    Transaction.objects.create(user=user, account=account, amount=amount, amount_currency=currency,
+                                               transaction_type='withdraw')
+                    account.balance -= amount_money
+
+                    account.balance += account.balance * 0.1
+                    account.save()
+                else:
+                    czk_currency = 'CZK'
+                    czk_amount_money = convert_money(amount_money, czk_currency)
+
+                    czk_account = Account.objects.filter(owner=user, balance_currency=czk_currency).first()
+
+                    if czk_account.balance >= czk_amount_money:
+                        Transaction.objects.create(user=user, account=czk_account, amount=czk_amount_money,
+                                                   amount_currency=czk_currency,
+                                                   transaction_type='withdraw')
+                        czk_account.balance -= czk_amount_money
+                        czk_account.save()
+                    else:
+                        ten_percent_balance_czk = czk_account.balance * 0.1
+                        if czk_amount_money < (czk_account.balance + ten_percent_balance_czk):
+                            Transaction.objects.create(user=user, account=czk_account, amount=czk_amount_money,
+                                                       amount_currency=czk_currency,
+                                                       transaction_type='withdraw')
+                            czk_account.balance -= czk_amount_money
+                            czk_account.balance += czk_account.balance * 0.1
+                            czk_account.save()
+                        else:
+                            form.add_error(None, "Insufficient funds for withdrawal.")
+                            return self.form_invalid(form)
 
         return redirect(self.success_url)
 
