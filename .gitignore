@@ -140,8 +140,8 @@ GitHub.sublime-settings
 !.vscode/extensions.json
 .history
 
-.env.dev
-/STIN/secret.py
-/static/
-/.env
-/staticfiles/
+#.env.dev
+#/STIN/secret.py
+##/static/
+##/.env
+#/staticfiles/
